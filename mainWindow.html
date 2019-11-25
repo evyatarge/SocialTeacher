@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Teacher Social Asistant</title>
+
+    <!-- Compiled and minified CSS from materializecss -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</head>
+<body>
+
+    <nav>
+        <div class="nav-wrapper">
+            <a class="brand-logo center">אפליקיה חברתית למורים</a>
+        </div>
+    </nav>
+
+    <input type="file" id="file" onchange="handleFile(this.files)"/>
+    <div id="test" style="background-color: burlywood; width: 100%; height: 20px;"></div>
+
+    <ul class="collection" id="list"></ul>
+    
+    
+    <!-- Action button -->
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red" onclick="openMenu">
+            <i class="large material-icons">mode_edit</i>
+        </a>
+        <ul>
+            <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+            <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+            <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+            <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+        </ul>
+    </div>
+
+    <script>
+            const Papa = require('papaparse')
+
+
+            const electron = require('electron')
+            const { ipcRenderer } = electron
+            const ul = document.querySelector('ul')
+
+            
+            // File read
+            // function handleFile(files){
+            //     const currentFile = files[0]
+            //     document.getElementById('test').innerHTML = hi
+
+            //     Papa.parse(currentFile, {
+            //         complete: function(results) {
+            //             console.log("Finished:", results.data);
+            //             document.getElementById('test').innerHTML = results.data
+            //         }
+            //     });
+            // }
+
+            const inputFile = document.getElementById('file')
+            inputFile.addEventListener('change', handleFile(inputFile.files), false)
+            function handleFile(files){
+                const file = files[0]
+                // document.getElementById('test').innerText += "hi"
+
+                Papa.parse(file, {
+                    complete: function(results) {
+                        console.log("Finished parse csv file:", results);
+                        // document.getElementById('test').innerHTML = results.data
+
+                        handleFileContent(results.data)
+                    }
+                });
+            }
+            function handleFileContent(fileContent){
+                for(data in fileContent){
+                    addName('',data)
+                }
+            }
+
+
+            // Action button
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.fixed-action-btn')
+                var instances = M.FloatingActionButton.init(elems, {
+                direction: 'left',
+                hoverEnabled: false
+                })
+            })
+
+            // Add item from add window
+            ipcRenderer.on('item:add', addName)
+
+            function addName(e, item){
+                const li = document.createElement('li')
+                li.className = 'collection-item'
+                const itemText = document.createTextNode(item)
+                li.appendChild(itemText)
+                ul.appendChild(li)
+            }
+
+            // clear all list items
+            ipcRenderer.on('item:clear', function(){
+                ul.innerHTML = ''
+            })
+
+            // Remove selected item by double-click
+            ul.addEventListener('dblclick', removeItem)
+
+            function removeItem(e) {
+                e.target.remove()
+            }
+
+        </script>
+
+</body>
+</html>

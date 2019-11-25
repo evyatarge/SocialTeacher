@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add Name</title>
+
+    <!-- Compiled and minified CSS from materializecss -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+</head>
+<body>
+    <div class="container">
+        <form>
+            <div>
+                <label class="right">:הכנס שם תלמיד</label>
+                <input type="text" id="name" autofocus>
+            </div>
+            <button class="btn waves-effect waves-light right" type="submit"> הוסף </button>
+        </form>
+    </div>
+    
+    <script>
+            const electron = require('electron')
+            const { ipcRenderer } = electron
+    
+            const form = document.querySelector('form')
+            form.addEventListener('submit', submitForm)
+    
+            function submitForm(e){
+                e.preventDefault();
+                const nameToSend = document.querySelector('#name').value
+                if(nameToSend != ''){
+                    ipcRenderer.send('item:add', nameToSend)
+                }
+            }
+    
+        </script>
+
+</body>
+
+
+</html>
