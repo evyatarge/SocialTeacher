@@ -16,7 +16,7 @@ app.on('ready', function(){
     });
     //load HTML into the window
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'mainWindow.html'),
+        pathname: path.join(__dirname, './frames/mainWindow/mainWindow.html'),
         protocol: 'file',
         slashes: true
     }));// that mean we are loading 'file://currentDirName/mainWindow.html' to the 'browser' window
@@ -36,30 +36,30 @@ app.on('ready', function(){
 function createAddNameWindow(){
 
     //Create new window
-    addWindow = new BrowserWindow({
+    addNameWindow = new BrowserWindow({
         width: 300,
         height: 200,
         webPreferences: {
             nodeIntegration: true
         }
     });
-    // addWindow.setMenu(null)
-    addWindow.setMenuBarVisibility(false)
+    // addNameWindow.setMenu(null)
+    addNameWindow.setMenuBarVisibility(false)
     //load HTML into the window
-    addWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'addNameWindow.html'),
+    addNameWindow.loadURL(url.format({
+        pathname: path.join(__dirname, './frames/mainWindow/addNameWindow/addNameWindow.html'),
         protocol: 'file',
         slashes: true
     }));
     // Garbage collection handle 
-    addWindow.on('close', function(){
-        addWindow = null
+    addNameWindow.on('close', function(){
+        addNameWindow = null
     })
 }
 
 ipcMain.on('item:add', (e, item)=>{
     mainWindow.webContents.send('item:add', item)
-    addWindow.close()
+    addNameWindow.close()
 })
 
 // Create menu template to use it be the app
