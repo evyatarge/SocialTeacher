@@ -3,7 +3,8 @@ const Papa = require('papaparse')
 
 const electron = require('electron')
 const { ipcRenderer } = electron
-const ul = document.querySelector('ul')
+
+const tableBody = document.getElementById('list')
 
 
 // File read
@@ -41,17 +42,19 @@ function handleFile(files){
 function handleFileContent(fileContent){
     let emptyRows = document.getElementById('emptyRows')
 
+    // let firstElement = fileContent.shift()
+
     for(element of fileContent){
         let firstName = element[0] || ''
         let lastName = element[1] || ''
-        let fullName = firstName + ' ' + lastName
+        // let fullName = firstName + ' ' + lastName
         if(firstName+lastName === ''){
             if(emptyRows.checked){
-                addName('',fullName)
+                addName([firstName, lastName])
             }
         }
         else{
-            addName('',fullName)
+            addName([firstName, lastName])
         }
         
     }
@@ -70,31 +73,38 @@ document.addEventListener('DOMContentLoaded', function() {
 // Add item from add window
 // - this is just an event hendler for events comes from ipcRenderer module
 // params: (eventName, callbackFunctionToExecute)
-ipcRenderer.on('item:add', addName)
+ipcRenderer.on('item:add', addName)//TODO - need to edit because of change in method 'addName' to get 2 params
 
 
-function addName(e, item){
-    
-    console.log('event e = '+e)
+function addName(nameArray){
+    const tr = document.createElement('tr')
 
-    const li = document.createElement('li')
-    li.className = 'collection-item'
-    const itemText = document.createTextNode(item)
-    li.appendChild(itemText)
-    ul.appendChild(li)
+    for(name of nameArray){
+        const cell = document.createElement('td')
+        const nameText = document.createTextNode(name)
+        cell.appendChild(nameText)
+        tr.appendChild(cell)
+    }
+
+    tableBody.appendChild(tr)
 }
 
 // clear all list items
 ipcRenderer.on('item:clear', function(){
     clearList()
+    clearFile()
 })
 
 function clearList(){
-    ul.innerHTML = ''
+    tableBody.innerHTML = ''
+}
+
+function clearFile() {
+    inputFile.value = ''
 }
 
 // Remove selected item by double-click
-ul.addEventListener('dblclick', removeItem)
+tableBody.addEventListener('dblclick', removeItem)
 
 function removeItem(e) {
     e.target.remove()
