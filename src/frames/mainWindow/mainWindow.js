@@ -39,11 +39,21 @@ function handleFile(files){
 }
 
 function handleFileContent(fileContent){
+    let emptyRows = document.getElementById('emptyRows')
+
     for(element of fileContent){
         let firstName = element[0] || ''
         let lastName = element[1] || ''
         let fullName = firstName + ' ' + lastName
-        addName('',fullName)
+        if(firstName+lastName === ''){
+            if(emptyRows.checked){
+                addName('',fullName)
+            }
+        }
+        else{
+            addName('',fullName)
+        }
+        
     }
 }
 

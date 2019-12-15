@@ -62,7 +62,7 @@ ipcMain.on('item:add', (e, item)=>{
     addNameWindow.close()
 })
 
-// Create menu template to use it be the app
+// Create menu template to use it by the app
 const mainMenuTemplate = [
     {
         label: 'File',
@@ -112,7 +112,8 @@ if(process.env.NODE_ENV !== 'production'){
                 }
             },
             {
-                role: 'reload'
+                role: 'reload',
+
             }
         ]
     })
