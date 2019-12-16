@@ -1,0 +1,73 @@
+body{
+    cursor: default;
+}
+nav {
+    width: 100%;
+    height: 70px;
+    background-color: black;
+    color: white;
+
+    display: flex;
+}
+.app-title {
+    margin: auto;
+    padding: 5px;
+    font-size: xx-large;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.controls-page-header{
+    height: 50px;
+    margin: 10px;
+}
+#file{
+    padding-bottom: 5px;
+}
+.table-container{
+    /* display: flex;
+    justify-content: flex-end; */
+    /* width: 50%; */
+    margin: 10px 10px 10px auto;
+    direction: rtl;
+}
+#names-table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+#names-table td {
+    border: 1px solid lightgray;
+    padding: 8px;
+}
+#names-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+#names-table tr:hover {
+    background-color: lightgray;
+}
+#names-table th {
+    border: 1px solid lightgray;
+    background-color: #26a6fc;
+    padding: 10px 5px;
+    text-align: center;
+    color: white;
+}
+#names-table select {
+    width: 25%;
+    margin: 5px;
+    padding: 3px;
+}
+
+#horizontal-seperator{
+    background-color: steelblue;
+    width: 100%;
+    height: 10px;
+    margin-bottom: 10px;;
+}
+
+#non-friend-container {
+    display: none;
+    direction: rtl;
+}
+#non-friend-calculated{
+    width: fit-content;
+}

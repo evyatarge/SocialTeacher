@@ -79,6 +79,7 @@ const mainMenuTemplate = [
             },
             {
                 label: 'Clear List',
+                accelerator: process.platform == 'darwin' ? 'Command+L' : 'Ctrl+L',
                 click(){
                     mainWindow.webContents.send('item:clear')
                 }
