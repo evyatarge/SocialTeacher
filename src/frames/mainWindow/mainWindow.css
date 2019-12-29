@@ -18,6 +18,9 @@ nav {
 .controls-page-header{
     height: 50px;
     margin: 10px;
+    display: flex;
+    flex-wrap: wrap-reverse;
+    justify-content: space-between;
 }
 #file{
     padding-bottom: 5px;
@@ -52,7 +55,7 @@ nav {
     color: white;
 }
 #names-table select {
-    width: 25%;
+    width: 90%;
     margin: 5px;
     padding: 3px;
 }

@@ -8,7 +8,9 @@ const { ipcRenderer } = electron
 const tableBody = document.getElementById('names-table-body')
 const inputFile = document.getElementById('file')
 
-const NUM_OF_FREINDS = 3
+let numOfFriendsVal = 3
+let numOfFriends = document.getElementById('numOfFriends')
+numOfFriends.addEventListener('change', ()=>{numOfFriendsVal=numOfFriends.value}, false)
 const allDropDowns = []
 
 inputFile.addEventListener('change', handleFile(inputFile.files), false)
@@ -41,7 +43,12 @@ function createTableHeader(header){
     }
     const friendsHeader = document.createElement('th')
     friendsHeader.innerText='חברים'
+
+    const summaryHeader = document.createElement('th')
+    summaryHeader.innerText='כמה רשמו אותי?'
+
     tr.appendChild(friendsHeader)
+    tr.appendChild(summaryHeader)
     tableBody.appendChild(tr)
 }
 
@@ -84,17 +91,22 @@ function addNameToTable(fullNameAsArray, index){
         const cell = craeteTableDataElement(name, 'td')
         tr.appendChild(cell)
     }
-    const dropdown = createNamesDropdown(fullNameAsArray, index)
 
+    const dropdown = createNamesDropdown(fullNameAsArray, index)
     const tdDropdowns = createFriensDropdownsTd(dropdown)
+    const summary = getNameSummaryTd(index)
+
     tr.appendChild(tdDropdowns)
+    tr.appendChild(summary)
     tableBody.appendChild(tr)
 }
 
 function createFriensDropdownsTd(dropdown){
     const td = document.createElement('td')
-    for(let friend=1; friend <= NUM_OF_FREINDS; friend++){
+    td.style.display='flex'
+    for(let friend=1; friend <= numOfFriendsVal; friend++){
         const span = document.createElement('span')
+        span.style.flex = numOfFriendsVal
         span.innerText = friend + '.'
         const currentDropDown = dropdown.cloneNode(true)
         allDropDowns.push(currentDropDown)
@@ -102,6 +114,15 @@ function createFriensDropdownsTd(dropdown){
         td.appendChild(span)
     }
     return td
+}
+
+function getNameSummaryTd(index) {
+    const summaryTd = document.createElement('td')
+    summaryTd.innerText = "מספר הילדים שרשמו אותי:"
+    const input = document.createElement('input')
+    input.id = 'summary'+index
+    summaryTd.appendChild(input)
+    return summaryTd
 }
 
 function craeteTableDataElement(name, tag) {
@@ -162,18 +183,23 @@ function clearFile() {
 
 function calculateNonFriend(){
     let nonFriendNames = []
-    for(fullNameAsArray of allNamesList){
+    for(let nameIndex = 0; nameIndex < allNamesList.length; nameIndex++){
         let existInSelected = false
-        let fullName = fullNameAsArray[0]+' '+fullNameAsArray[1]
-        for(let dropdown=0; !existInSelected && dropdown<allDropDowns.length; dropdown++){
-            let elementText = allDropDowns[dropdown].selectedOptions[0].text
-            if(elementText===fullName){
+        let fullName = getFullName(allNamesList[nameIndex])
+
+        let nameCounter = 0
+        for(let dropdown = 0; dropdown < allDropDowns.length; dropdown++){
+            let elementText = selectedName(dropdown)
+            if(elementText.replace(/\s/g,'')===fullName.replace(/\s/g,'')){
                 existInSelected = true
+                nameCounter++
             }
         }
         if(!existInSelected){
             nonFriendNames.push(fullName)
         }
+        let currentNameSummary = document.getElementById('summary'+nameIndex)
+        currentNameSummary.value = nameCounter
     }
     if(nonFriendNames.length > 0){
         const nonFriends = nonFriendNames.reduce((allNames, name)=>{
@@ -184,6 +210,12 @@ function calculateNonFriend(){
     }
 }
 
+function getFullName(fullNameAsArray){
+    return fullNameAsArray[0]+' '+fullNameAsArray[1]
+}
+function selectedName(dropdownIndex){
+    return allDropDowns[dropdownIndex].selectedOptions[0].text
+}
 // Remove selected item by double-click
 // tableBody.addEventListener('dblclick', removeItem)
 

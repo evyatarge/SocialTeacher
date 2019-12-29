@@ -12,12 +12,16 @@
   },
   "author": "Evyatar Gerstle",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evyatarge/SocialTeacher"
+  },
   "dependencies": {
+    "csv-loader": "^3.0.2",
     "electron": "^7.0.0",
     "papaparse": "^5.1.0"
   },
   "devDependencies": {
-    "csv-loader": "^3.0.2",
     "electron-packager": "^14.1.0"
   }
 }
