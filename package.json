@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "csv-loader": "^3.0.2",
-    "electron": "^7.0.0",
+    "electron": "^11.5.0",
     "papaparse": "^5.1.0"
   },
   "devDependencies": {
