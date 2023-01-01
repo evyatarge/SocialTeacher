@@ -17,7 +17,7 @@
     "url": "https://github.com/evyatarge/SocialTeacher"
   },
   "dependencies": {
-    "csv-loader": "^3.0.2",
+    "csv-loader": "^3.0.5",
     "electron": "^7.0.0",
     "papaparse": "^5.1.0"
   },
